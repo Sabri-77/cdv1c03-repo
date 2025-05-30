@@ -36,26 +36,32 @@ pipeline {
                 }
             }
         }
-        stage('ST5-7221327e') {
+        stage('ST5-3438220c') {
             steps {
                 script {
-                    def userInput = input(id: 'Continue', message: 'Continue the pipeline?', parameters: [choice(choices: ['Proceed', 'Abort'], description: '', name: 'decision')])
-                    if (userInput == 'Abort') {
-                        error("Pipeline aborted by user.")
+                    def userChoice = input(
+                        id: 'UserInput',
+                        message: 'Continue the pipeline?',
+                        parameters: [
+                            choice(name: 'decision', choices: ['Proceed', 'Abort'], description: 'Choose one')
+                        ]
+                    )
+                    if (userChoice == 'Proceed') {
+                        continuePipeline = true
+                        echo "ST5-3438220c : Continue the pipeline."
                     } else {
-                        echo "ST5-7221327e : Continue the pipeline."
+                        error("Pipeline aborted by user.")
                     }
                 }
             }
         }
-        stage('ST6-7221327e') {
+
+        stage('ST6-3438220c') {
             when {
-                expression {
-                    currentBuild.rawBuild.getAction(hudson.model.ParametersAction)?.getParameter("decision")?.value == "Proceed"
-                }
+                expression { return continuePipeline }
             }
             steps {
-                echo "ST6-7221327e : Ready for next phase"
+                echo "ST6-3438220c : Ready for next phase"
             }
         }
     }
