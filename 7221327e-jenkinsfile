@@ -19,4 +19,4 @@ pipeline {
                 echo "ST2-7221327e: Server1 is successfully created"
             }
         }
-		}	
+	
