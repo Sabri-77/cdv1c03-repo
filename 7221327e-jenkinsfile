@@ -6,3 +6,5 @@ pipeline {
                 echo "ST1-7221327e: Setup Release Environment Completed."
             }
         }
+      }
+    }
