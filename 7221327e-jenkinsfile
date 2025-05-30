@@ -38,27 +38,4 @@ pipeline {
                 }
             }
         }
-        stage('ST5-7221327e') {
-            steps {
-                script {
-                    def userInput = input(id: 'Continue', message: 'Continue the pipeline?', parameters: [choice(choices: ['Proceed', 'Abort'], description: '', name: 'decision')])
-                    if (userInput == 'Abort') {
-                        error("Pipeline aborted by user.")
-                    } else {
-                        echo "ST5-7221327e : Continue the pipeline."
-                    }
-                }
-            }
-        }
-        stage('ST6-7221327e') {
-            when {
-                expression {
-                    currentBuild.rawBuild.getAction(hudson.model.ParametersAction)?.getParameter("decision")?.value == "Proceed"
-                }
-            }
-            steps {
-                echo "ST6-7221327e : Ready for next phase"
-            }
-        }
-    }
-}
+        
