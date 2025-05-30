@@ -19,4 +19,9 @@ pipeline {
                 echo "ST2-7221327e: Server1 is successfully created"
             }
         }
+	stage('ST3-7221327e') {
+            steps {
+                echo "ST3-7221327e: Server1 is healthy – Health check done"
+            }
+        }
 	
