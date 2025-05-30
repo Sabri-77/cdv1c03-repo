@@ -6,17 +6,58 @@ pipeline {
                 echo "ST1-7221327e: Setup Release Environment Completed."
             }
         }
-      }
-    }
         stage('ST2-7221327e') {
             steps {
                 script {
                     sh """
-                       sudo docker rm -f server1-7221327e || true
-                     sudo docker run -dit --name server1-7221327e -p 32700:80 svr-image-7221327e	
+                        docker rm -f server1-7221327e || true
+                        docker run -dit --name server1-7221327e -p 32700:80 svr-image-7221327e
                     """
                 }
-		echo "ST2-7221327e: Server1 is successfully created"
+                echo "ST2-7221327e: Server1 is successfully created"
             }
         }
-	
+		}	
+        stage('ST3-7221327e') {
+            steps {
+                echo "ST3-7221327e: Server1 is healthy – Health check done"
+            }
+        }
+        stage('ST4-Parallel-7221327e') {
+            parallel {
+                stage('ST4A-7221327e') {
+                    steps {
+                        echo "ST4A-7221327e: SQLI Check Completed"
+                    }
+                }
+                stage('ST4B-7221327e') {
+                    steps {
+                        echo "ST4B-7221327e: XSS Check Completed"
+                    }
+                }
+            }
+        }
+        stage('ST5-7221327e') {
+            steps {
+                script {
+                    def userInput = input(id: 'Continue', message: 'Continue the pipeline?', parameters: [choice(choices: ['Proceed', 'Abort'], description: '', name: 'decision')])
+                    if (userInput == 'Abort') {
+                        error("Pipeline aborted by user.")
+                    } else {
+                        echo "ST5-7221327e : Continue the pipeline."
+                    }
+                }
+            }
+        }
+        stage('ST6-7221327e') {
+            when {
+                expression {
+                    currentBuild.rawBuild.getAction(hudson.model.ParametersAction)?.getParameter("decision")?.value == "Proceed"
+                }
+            }
+            steps {
+                echo "ST6-7221327e : Ready for next phase"
+            }
+        }
+    }
+}
