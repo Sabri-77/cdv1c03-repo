@@ -10,14 +10,13 @@ pipeline {
             steps {
                 script {
                     sh """
-                       sudo docker rm -f server1-7221327e || true
-                        sudo docker run -dit --name server1-7221327e -p 32700:80 svr-image-7221327e
+                        docker rm -f server1-7221327e || true
+                        docker run -dit --name server1-7221327e -p 32700:80 svr-image-7221327e
                     """
                 }
                 echo "ST2-7221327e: Server1 is successfully created"
             }
         }
-		}	
         stage('ST3-7221327e') {
             steps {
                 echo "ST3-7221327e: Server1 is healthy – Health check done"
@@ -58,6 +57,6 @@ pipeline {
             steps {
                 echo "ST6-7221327e : Ready for next phase"
             }
-        }
-    }
+        }
+    }
 }
